@@ -2,8 +2,15 @@
 import type { TimeRange } from '@/utils/types';
 import { languages } from '@/utils/languages';
 
+const props = withDefaults(defineProps<{
+  showFavoritesOnly?: boolean;
+}>(), {
+  showFavoritesOnly: true,
+});
+
 const timeRange = defineModel<TimeRange>('timeRange', { required: true });
 const language = defineModel<string>('language', { required: true });
+const favoritesOnly = defineModel<boolean>('favoritesOnly', { default: false });
 
 const timeRanges: { label: string; value: TimeRange }[] = [
   { label: 'Daily', value: 'daily' },
@@ -38,5 +45,20 @@ const timeRanges: { label: string; value: TimeRange }[] = [
         {{ lang.name }}
       </option>
     </select>
+
+    <button
+      v-if="props.showFavoritesOnly"
+      class="flex items-center gap-1 px-2.5 py-1 text-xs rounded-md border transition-colors"
+      :class="
+        favoritesOnly
+          ? 'border-yellow-500 bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300'
+          : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-750'
+      "
+      :aria-pressed="favoritesOnly"
+      @click="favoritesOnly = !favoritesOnly"
+    >
+      <span class="i-carbon-star-filled text-xs" />
+      Only Favorites
+    </button>
   </div>
 </template>

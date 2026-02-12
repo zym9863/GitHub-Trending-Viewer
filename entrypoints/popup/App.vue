@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useTrending } from '@/composables/useTrending';
 import { useFavorites } from '@/composables/useFavorites';
 import { useTheme } from '@/composables/useTheme';
@@ -15,6 +15,17 @@ const { repos, developers, loading, error, timeRange, language, activeTab, loadR
   useTrending();
 const { favorites, toggleFavorite } = useFavorites();
 const { theme, toggleTheme } = useTheme();
+const favoritesOnly = ref(false);
+const displayRepos = computed(() =>
+  favoritesOnly.value
+    ? repos.value.filter((repo) => favorites.value.has(repo.fullName))
+    : repos.value,
+);
+const repoEmptyText = computed(() =>
+  favoritesOnly.value
+    ? 'No favorited repositories under current filters'
+    : 'No trending repositories found',
+);
 
 onMounted(() => {
   loadRepos();
@@ -37,7 +48,12 @@ onMounted(() => {
 
     <!-- Filters -->
     <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
-      <FilterBar v-model:time-range="timeRange" v-model:language="language" />
+      <FilterBar
+        v-model:time-range="timeRange"
+        v-model:language="language"
+        v-model:favorites-only="favoritesOnly"
+        :show-favorites-only="activeTab === 'repos'"
+      />
     </div>
 
     <!-- Content -->
@@ -47,8 +63,9 @@ onMounted(() => {
       <template v-else>
         <RepoList
           v-if="activeTab === 'repos'"
-          :repos="repos"
+          :repos="displayRepos"
           :favorites="favorites"
+          :empty-text="repoEmptyText"
           @toggle-favorite="toggleFavorite"
         />
         <DevList v-else :developers="developers" />

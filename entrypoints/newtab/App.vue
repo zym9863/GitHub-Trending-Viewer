@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useTrending } from '@/composables/useTrending';
 import { useFavorites } from '@/composables/useFavorites';
 import { useTheme } from '@/composables/useTheme';
@@ -15,6 +15,17 @@ const { repos, developers, loading, error, timeRange, language, activeTab, loadR
   useTrending();
 const { favorites, toggleFavorite } = useFavorites();
 const { theme, toggleTheme } = useTheme();
+const favoritesOnly = ref(false);
+const displayRepos = computed(() =>
+  favoritesOnly.value
+    ? repos.value.filter((repo) => favorites.value.has(repo.fullName))
+    : repos.value,
+);
+const repoEmptyText = computed(() =>
+  favoritesOnly.value
+    ? 'No favorited repositories under current filters'
+    : 'No trending repositories found',
+);
 
 onMounted(() => {
   loadRepos();
@@ -36,7 +47,12 @@ onMounted(() => {
 
         <div class="flex items-center justify-between gap-4">
           <TabSwitcher :active-tab="activeTab" @update:active-tab="activeTab = $event" />
-          <FilterBar v-model:time-range="timeRange" v-model:language="language" />
+          <FilterBar
+            v-model:time-range="timeRange"
+            v-model:language="language"
+            v-model:favorites-only="favoritesOnly"
+            :show-favorites-only="activeTab === 'repos'"
+          />
         </div>
       </div>
     </header>
@@ -46,14 +62,23 @@ onMounted(() => {
       <LoadingSpinner v-if="loading" />
       <ErrorMessage v-else-if="error" :message="error" @retry="refresh" />
       <template v-else>
-        <div v-if="activeTab === 'repos'" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div v-for="repo in repos" :key="repo.fullName">
-            <RepoList
-              :repos="[repo]"
-              :favorites="favorites"
-              @toggle-favorite="toggleFavorite"
-            />
+        <div v-if="activeTab === 'repos'">
+          <div v-if="displayRepos.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div v-for="repo in displayRepos" :key="repo.fullName">
+              <RepoList
+                :repos="[repo]"
+                :favorites="favorites"
+                @toggle-favorite="toggleFavorite"
+              />
+            </div>
           </div>
+          <RepoList
+            v-else
+            :repos="[]"
+            :favorites="favorites"
+            :empty-text="repoEmptyText"
+            @toggle-favorite="toggleFavorite"
+          />
         </div>
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           <div v-for="dev in developers" :key="dev.username">

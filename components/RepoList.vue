@@ -2,10 +2,13 @@
 import type { TrendingRepo } from '@/utils/types';
 import RepoCard from './RepoCard.vue';
 
-defineProps<{
+withDefaults(defineProps<{
   repos: TrendingRepo[];
   favorites: Set<string>;
-}>();
+  emptyText?: string;
+}>(), {
+  emptyText: 'No trending repositories found',
+});
 
 const emit = defineEmits<{
   toggleFavorite: [repoFullName: string];
@@ -22,7 +25,7 @@ const emit = defineEmits<{
       @toggle-favorite="emit('toggleFavorite', $event)"
     />
     <div v-if="repos.length === 0" class="text-center py-6 text-sm text-muted">
-      No trending repositories found
+      {{ emptyText }}
     </div>
   </div>
 </template>
