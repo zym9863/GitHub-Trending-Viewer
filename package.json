@@ -1,8 +1,8 @@
 {
-  "name": "wxt-vue-starter",
-  "description": "manifest.json description",
+  "name": "github-trending-viewer",
+  "description": "Browse GitHub trending repositories and developers",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",
@@ -18,8 +18,12 @@
     "vue": "^3.5.27"
   },
   "devDependencies": {
+    "@iconify-json/carbon": "^1.2.18",
+    "@unocss/preset-icons": "^66.6.0",
+    "@unocss/preset-uno": "^66.6.0",
     "@wxt-dev/module-vue": "^1.0.3",
     "typescript": "^5.9.3",
+    "unocss": "^66.6.0",
     "vue-tsc": "^3.2.4",
     "wxt": "^0.20.15"
   }
