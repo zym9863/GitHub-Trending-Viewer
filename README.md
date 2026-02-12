@@ -1,3 +1,5 @@
+[中文](README.md) | [English](README-EN.md)
+
 # GitHub Trending Viewer
 
 一个基于 `WXT + Vue 3 + UnoCSS` 的浏览器扩展，用于浏览 GitHub Trending 仓库和开发者。
