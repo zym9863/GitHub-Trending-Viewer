@@ -10,7 +10,15 @@ export default defineConfig({
   manifest: {
     name: 'GitHub Trending Viewer',
     description: 'Browse GitHub trending repositories and developers',
-    permissions: ['storage'],
+    permissions: ['storage', 'contextMenus'],
     host_permissions: ['https://github.com/*'],
+    commands: {
+      'open-trending-page': {
+        description: 'Open GitHub Trending full page',
+        suggested_key: {
+          default: 'Alt+G',
+        },
+      },
+    },
   },
 });

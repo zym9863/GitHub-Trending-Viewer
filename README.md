@@ -6,7 +6,7 @@
 
 当前实现包含两个前端入口：
 - `popup`：浏览器工具栏弹窗视图
-- `newtab`：新标签页视图
+- `trending`：完整页视图（手动打开，不接管浏览器新标签页）
 
 ## 功能特性
 
@@ -30,6 +30,7 @@
 - 数据通过请求 `https://github.com/trending` 页面并解析 HTML 获取（非 GitHub 官方 API）。
 - 需要的扩展权限：
   - `storage`
+  - `contextMenus`
   - `https://github.com/*`（`host_permissions`）
 - 缓存键按 `类型 + 时间范围 + 语言` 组合生成，例如：
   - `repos:daily:all`
@@ -83,6 +84,12 @@ pnpm compile
 4. 点击“加载已解压的扩展程序”
 5. 选择 `.output/chrome-mv3-dev`（开发模式）或 `.output/chrome-mv3`（构建产物）
 
+## 打开完整页视图
+
+- 快捷键：按 `Alt+G`（可在 `chrome://extensions/shortcuts` 自定义）
+- 扩展菜单：右键扩展图标，点击 `Open GitHub Trending Page`
+- Popup 按钮：点击 `Open Full Page`
+
 ## 项目结构
 
 ```text
@@ -90,7 +97,7 @@ pnpm compile
 ├─ entrypoints/
 │  ├─ background.ts        # 后台脚本（安装时预拉取数据）
 │  ├─ popup/               # Popup 入口
-│  └─ newtab/              # New Tab 入口
+│  └─ trending/            # Full-page 入口
 ├─ components/             # 视图组件（RepoCard/DevCard/FilterBar 等）
 ├─ composables/            # 业务状态（trending/favorites/theme）
 ├─ utils/                  # API、HTML 解析、存储、类型、语言列表

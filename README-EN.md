@@ -1,4 +1,4 @@
-[中文](README.md) | [English](README-EN.md)
+[Chinese](README.md) | [English](README-EN.md)
 
 # GitHub Trending Viewer
 
@@ -6,7 +6,7 @@ A browser extension built with `WXT + Vue 3 + UnoCSS` for browsing GitHub Trendi
 
 This project currently has two UI entry points:
 - `popup`: toolbar popup view
-- `newtab`: new tab view
+- `trending`: full-page view (opened manually, does not override browser new tab)
 
 ## Features
 
@@ -30,6 +30,7 @@ This project currently has two UI entry points:
 - Data is fetched from `https://github.com/trending` and parsed from HTML (not an official GitHub API).
 - Required extension permissions:
   - `storage`
+  - `contextMenus`
   - `https://github.com/*` (`host_permissions`)
 - Cache keys are built from `type + time range + language`, for example:
   - `repos:daily:all`
@@ -83,20 +84,26 @@ pnpm compile
 4. Click "Load unpacked"
 5. Select `.output/chrome-mv3-dev` (dev) or `.output/chrome-mv3` (build)
 
+## Open the Full-Page View
+
+- Keyboard shortcut: press `Alt+G` (customizable in `chrome://extensions/shortcuts`)
+- Extension menu: right-click the extension action and click `Open GitHub Trending Page`
+- Popup button: click `Open Full Page`
+
 ## Project Structure
 
 ```text
 .
-├─ entrypoints/
-│  ├─ background.ts        # Background script (prefetch on install)
-│  ├─ popup/               # Popup entry
-│  └─ newtab/              # New Tab entry
-├─ components/             # UI components (RepoCard/DevCard/FilterBar, etc.)
-├─ composables/            # State logic (trending/favorites/theme)
-├─ utils/                  # API, HTML parser, storage, types, languages
-├─ public/icon/            # Extension icons
-├─ wxt.config.ts           # WXT and manifest config
-└─ uno.config.ts           # UnoCSS config
+|-- entrypoints/
+|   |-- background.ts        # Background script (prefetch on install)
+|   |-- popup/               # Popup entry
+|   `-- trending/            # Full-page entry
+|-- components/              # UI components (RepoCard/DevCard/FilterBar, etc.)
+|-- composables/             # State logic (trending/favorites/theme)
+|-- utils/                   # API, HTML parser, storage, types, languages
+|-- public/icon/             # Extension icons
+|-- wxt.config.ts            # WXT and manifest config
+`-- uno.config.ts            # UnoCSS config
 ```
 
 ## Known Limitations

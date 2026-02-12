@@ -26,6 +26,9 @@ const repoEmptyText = computed(() =>
     ? 'No favorited repositories under current filters'
     : 'No trending repositories found',
 );
+const openFullPage = async () => {
+  await browser.tabs.create({ url: browser.runtime.getURL('/trending.html') });
+};
 
 onMounted(() => {
   loadRepos();
@@ -40,7 +43,16 @@ onMounted(() => {
         <span class="i-carbon-trending-up text-lg text-blue-500" />
         <h1 class="text-sm font-bold">GitHub Trending</h1>
       </div>
-      <ThemeToggle :theme="theme" @toggle="toggleTheme" />
+      <div class="flex items-center gap-2">
+        <button
+          class="inline-flex items-center gap-1 rounded-md border border-gray-200 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+          @click="openFullPage"
+        >
+          <span class="i-carbon-launch text-sm" />
+          Open Full Page
+        </button>
+        <ThemeToggle :theme="theme" @toggle="toggleTheme" />
+      </div>
     </div>
 
     <!-- Tabs -->
