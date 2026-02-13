@@ -33,19 +33,21 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-950 text-primary">
-    <!-- Header -->
-    <header class="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
-      <div class="max-w-5xl mx-auto px-6 py-3">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-3">
-            <span class="i-carbon-trending-up text-2xl text-blue-500" />
-            <h1 class="text-xl font-bold">GitHub Trending</h1>
+  <div class="app-shell min-h-screen pb-8 text-primary">
+    <header class="sticky top-0 z-20 px-4 pt-4">
+      <div class="panel-glass mx-auto max-w-6xl px-5 py-4">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="subtitle-label">Discover</p>
+            <h1 class="title-display mt-0.5 text-[28px] leading-none md:text-[34px]">GitHub Trending Atlas</h1>
+            <p class="mt-2 max-w-2xl text-sm text-secondary">
+              Explore repository momentum and standout developers in one curated surface.
+            </p>
           </div>
           <ThemeToggle :theme="theme" @toggle="toggleTheme" />
         </div>
 
-        <div class="flex items-center justify-between gap-4">
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
           <TabSwitcher :active-tab="activeTab" @update:active-tab="activeTab = $event" />
           <FilterBar
             v-model:time-range="timeRange"
@@ -57,35 +59,22 @@ onMounted(() => {
       </div>
     </header>
 
-    <!-- Content -->
-    <main class="max-w-5xl mx-auto px-6 py-6">
-      <LoadingSpinner v-if="loading" />
-      <ErrorMessage v-else-if="error" :message="error" @retry="refresh" />
-      <template v-else>
-        <div v-if="activeTab === 'repos'">
-          <div v-if="displayRepos.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div v-for="repo in displayRepos" :key="repo.fullName">
-              <RepoList
-                :repos="[repo]"
-                :favorites="favorites"
-                @toggle-favorite="toggleFavorite"
-              />
-            </div>
-          </div>
+    <main class="mx-auto mt-4 max-w-6xl px-4">
+      <section class="panel-glass px-4 py-4 md:px-5 md:py-5">
+        <LoadingSpinner v-if="loading" />
+        <ErrorMessage v-else-if="error" :message="error" @retry="refresh" />
+        <template v-else>
           <RepoList
-            v-else
-            :repos="[]"
+            v-if="activeTab === 'repos'"
+            layout="grid"
+            :repos="displayRepos"
             :favorites="favorites"
             :empty-text="repoEmptyText"
             @toggle-favorite="toggleFavorite"
           />
-        </div>
-        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          <div v-for="dev in developers" :key="dev.username">
-            <DevList :developers="[dev]" />
-          </div>
-        </div>
-      </template>
+          <DevList v-else layout="grid" :developers="developers" />
+        </template>
+      </section>
     </main>
   </div>
 </template>

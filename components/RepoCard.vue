@@ -18,17 +18,19 @@ function formatNumber(n: number): string {
 </script>
 
 <template>
-  <div class="card hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+  <article class="card">
     <div class="flex items-start justify-between gap-2">
-      <a
-        :href="repo.url"
-        target="_blank"
-        rel="noopener"
-        class="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline truncate"
-      >
-        <span class="i-carbon-logo-github mr-1 text-xs align-middle" />
-        {{ repo.fullName }}
-      </a>
+      <div class="min-w-0 flex-1">
+        <a
+          :href="repo.url"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex max-w-full items-center gap-1 truncate text-sm font-semibold text-primary hover:text-[color:var(--accent)]"
+        >
+          <span class="i-carbon-logo-github text-xs text-[color:var(--accent)]" />
+          <span class="truncate">{{ repo.fullName }}</span>
+        </a>
+      </div>
       <FavoriteButton
         :filled="isFavorite"
         @toggle="emit('toggleFavorite', repo.fullName)"
@@ -37,15 +39,15 @@ function formatNumber(n: number): string {
 
     <p
       v-if="repo.description"
-      class="mt-1 text-xs text-secondary line-clamp-2"
+      class="mt-2 line-clamp-2 text-xs text-secondary"
     >
       {{ repo.description }}
     </p>
 
-    <div class="flex items-center gap-3 mt-2 flex-wrap">
+    <div class="mt-3 flex flex-wrap items-center gap-2.5">
       <span
         v-if="repo.language"
-        class="flex items-center gap-1 text-xs text-secondary"
+        class="inline-flex items-center gap-1 rounded-full border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-2 py-0.5 text-[11px] text-secondary"
       >
         <span
           class="w-2.5 h-2.5 rounded-full inline-block"
@@ -58,7 +60,7 @@ function formatNumber(n: number): string {
         :href="`${repo.url}/stargazers`"
         target="_blank"
         rel="noopener"
-        class="flex items-center gap-0.5 text-xs text-secondary hover:text-blue-500"
+        class="inline-flex items-center gap-1 text-xs text-secondary hover:text-[color:var(--accent)]"
       >
         <span class="i-carbon-star text-xs" />
         {{ formatNumber(repo.stars) }}
@@ -68,7 +70,7 @@ function formatNumber(n: number): string {
         :href="`${repo.url}/forks`"
         target="_blank"
         rel="noopener"
-        class="flex items-center gap-0.5 text-xs text-secondary hover:text-blue-500"
+        class="inline-flex items-center gap-1 text-xs text-secondary hover:text-[color:var(--accent)]"
       >
         <span class="i-carbon-branch text-xs" />
         {{ formatNumber(repo.forks) }}
@@ -76,15 +78,15 @@ function formatNumber(n: number): string {
 
       <span
         v-if="repo.todayStars"
-        class="flex items-center gap-0.5 text-xs text-yellow-600 dark:text-yellow-500 ml-auto"
+        class="ml-auto inline-flex items-center gap-1 rounded-full bg-[color:var(--accent-soft)] px-2 py-0.5 text-[11px] text-[color:var(--warning)]"
       >
         <span class="i-carbon-star-filled text-xs" />
         {{ formatNumber(repo.todayStars) }} today
       </span>
     </div>
 
-    <div v-if="repo.builtBy.length > 0" class="flex items-center gap-1 mt-2">
-      <span class="text-xs text-muted mr-1">Built by</span>
+    <div v-if="repo.builtBy.length > 0" class="mt-3 flex items-center gap-1.5">
+      <span class="text-[11px] text-muted">Built by</span>
       <a
         v-for="dev in repo.builtBy.slice(0, 5)"
         :key="dev.username"
@@ -96,9 +98,9 @@ function formatNumber(n: number): string {
         <img
           :src="dev.avatar"
           :alt="dev.username"
-          class="w-5 h-5 rounded-full ring-1 ring-white dark:ring-gray-800"
+          class="h-5 w-5 rounded-full ring-1 ring-[color:var(--surface-strong)]"
         />
       </a>
     </div>
-  </div>
+  </article>
 </template>

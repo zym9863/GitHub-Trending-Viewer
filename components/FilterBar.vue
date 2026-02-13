@@ -20,16 +20,16 @@ const timeRanges: { label: string; value: TimeRange }[] = [
 </script>
 
 <template>
-  <div class="flex items-center gap-2 flex-wrap">
-    <div class="flex rounded-md overflow-hidden border border-gray-200 dark:border-gray-700">
+  <div class="flex flex-wrap items-center gap-2">
+    <div class="segmented">
       <button
         v-for="range in timeRanges"
         :key="range.value"
-        class="px-2.5 py-1 text-xs font-medium transition-colors"
+        class="segmented-btn"
         :class="
           timeRange === range.value
-            ? 'bg-blue-500 text-white'
-            : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-750'
+            ? 'segmented-btn-active'
+            : ''
         "
         @click="timeRange = range.value"
       >
@@ -39,7 +39,7 @@ const timeRanges: { label: string; value: TimeRange }[] = [
 
     <select
       v-model="language"
-      class="px-2 py-1 text-xs rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 outline-none cursor-pointer"
+      class="select-field cursor-pointer"
     >
       <option v-for="lang in languages" :key="lang.urlParam" :value="lang.urlParam">
         {{ lang.name }}
@@ -48,16 +48,16 @@ const timeRanges: { label: string; value: TimeRange }[] = [
 
     <button
       v-if="props.showFavoritesOnly"
-      class="flex items-center gap-1 px-2.5 py-1 text-xs rounded-md border transition-colors"
+      class="chip-toggle"
       :class="
         favoritesOnly
-          ? 'border-yellow-500 bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300'
-          : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-750'
+          ? 'chip-toggle-active'
+          : ''
       "
       :aria-pressed="favoritesOnly"
       @click="favoritesOnly = !favoritesOnly"
     >
-      <span class="i-carbon-star-filled text-xs" />
+      <span class="i-carbon-star-filled text-xs text-[color:var(--warning)]" />
       Only Favorites
     </button>
   </div>

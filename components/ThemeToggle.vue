@@ -24,10 +24,13 @@ const labelMap: Record<ThemeMode, string> = {
 
 <template>
   <button
-    class="p-1.5 rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400"
+    class="theme-toggle"
     :title="`Theme: ${labelMap[theme]}`"
     @click="emit('toggle')"
   >
-    <span :class="iconMap[theme]" class="text-lg" />
+    <span class="theme-toggle-icon">
+      <span :class="iconMap[theme]" class="text-sm" />
+    </span>
+    <span>{{ labelMap[theme] }}</span>
   </button>
 </template>

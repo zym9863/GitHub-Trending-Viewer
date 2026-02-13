@@ -6,17 +6,24 @@ withDefaults(defineProps<{
   repos: TrendingRepo[];
   favorites: Set<string>;
   emptyText?: string;
+  layout?: 'stack' | 'grid';
 }>(), {
   emptyText: 'No trending repositories found',
+  layout: 'stack',
 });
 
 const emit = defineEmits<{
   toggleFavorite: [repoFullName: string];
 }>();
+
+const layoutClassMap: Record<'stack' | 'grid', string> = {
+  stack: 'stagger-enter flex flex-col gap-3',
+  grid: 'stagger-enter grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3',
+};
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
+  <div :class="layoutClassMap[layout]">
     <RepoCard
       v-for="repo in repos"
       :key="repo.fullName"
@@ -24,7 +31,7 @@ const emit = defineEmits<{
       :is-favorite="favorites.has(repo.fullName)"
       @toggle-favorite="emit('toggleFavorite', $event)"
     />
-    <div v-if="repos.length === 0" class="text-center py-6 text-sm text-muted">
+    <div v-if="repos.length === 0" class="empty-state">
       {{ emptyText }}
     </div>
   </div>

@@ -36,52 +36,59 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col h-full bg-white dark:bg-gray-900 text-primary">
-    <!-- Header -->
-    <div class="flex items-center justify-between px-3 py-2 border-b border-gray-200 dark:border-gray-700">
-      <div class="flex items-center gap-2">
-        <span class="i-carbon-trending-up text-lg text-blue-500" />
-        <h1 class="text-sm font-bold">GitHub Trending</h1>
-      </div>
-      <div class="flex items-center gap-2">
-        <button
-          class="inline-flex items-center gap-1 rounded-md border border-gray-200 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
-          @click="openFullPage"
-        >
-          <span class="i-carbon-launch text-sm" />
-          Open Full Page
-        </button>
-        <ThemeToggle :theme="theme" @toggle="toggleTheme" />
-      </div>
-    </div>
+  <div class="app-shell h-full text-primary">
+    <div class="mx-3 my-3 flex h-[calc(100%-1.5rem)] flex-col gap-3">
+      <header class="panel-glass px-3 py-3">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="subtitle-label">Live feed</p>
+            <h1 class="title-display mt-0.5 text-[19px] leading-none">GitHub Trending</h1>
+          </div>
+          <ThemeToggle :theme="theme" @toggle="toggleTheme" />
+        </div>
+        <div class="mt-3 flex items-center justify-between gap-2 rounded-[14px] border border-[color:var(--border)] bg-[color:var(--surface-muted)] px-2 py-2">
+          <div class="flex min-w-0 items-center gap-2">
+            <span class="i-carbon-trending-up text-base text-[color:var(--accent)]" />
+            <p class="truncate text-xs text-secondary">Track top repos and developers without leaving your tab.</p>
+          </div>
+          <button
+            class="btn-ghost shrink-0 px-2.5 py-1 text-[11px]"
+            @click="openFullPage"
+          >
+            <span class="i-carbon-launch text-sm" />
+            Full Page
+          </button>
+        </div>
+      </header>
 
-    <!-- Tabs -->
-    <TabSwitcher :active-tab="activeTab" @update:active-tab="activeTab = $event" />
+      <section class="panel-glass px-3 py-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <TabSwitcher :active-tab="activeTab" @update:active-tab="activeTab = $event" />
+          <FilterBar
+            v-model:time-range="timeRange"
+            v-model:language="language"
+            v-model:favorites-only="favoritesOnly"
+            :show-favorites-only="activeTab === 'repos'"
+          />
+        </div>
+      </section>
 
-    <!-- Filters -->
-    <div class="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
-      <FilterBar
-        v-model:time-range="timeRange"
-        v-model:language="language"
-        v-model:favorites-only="favoritesOnly"
-        :show-favorites-only="activeTab === 'repos'"
-      />
-    </div>
-
-    <!-- Content -->
-    <div class="flex-1 overflow-y-auto px-3 py-2" style="max-height: 440px">
-      <LoadingSpinner v-if="loading" />
-      <ErrorMessage v-else-if="error" :message="error" @retry="refresh" />
-      <template v-else>
-        <RepoList
-          v-if="activeTab === 'repos'"
-          :repos="displayRepos"
-          :favorites="favorites"
-          :empty-text="repoEmptyText"
-          @toggle-favorite="toggleFavorite"
-        />
-        <DevList v-else :developers="developers" />
-      </template>
+      <section class="panel-glass min-h-0 flex-1 overflow-hidden">
+        <div class="scroll-pane h-full overflow-y-auto px-3 py-3">
+          <LoadingSpinner v-if="loading" />
+          <ErrorMessage v-else-if="error" :message="error" @retry="refresh" />
+          <template v-else>
+            <RepoList
+              v-if="activeTab === 'repos'"
+              :repos="displayRepos"
+              :favorites="favorites"
+              :empty-text="repoEmptyText"
+              @toggle-favorite="toggleFavorite"
+            />
+            <DevList v-else :developers="developers" />
+          </template>
+        </div>
+      </section>
     </div>
   </div>
 </template>

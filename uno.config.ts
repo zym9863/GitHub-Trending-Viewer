@@ -8,13 +8,13 @@ export default defineConfig({
     }),
   ],
   shortcuts: {
-    'btn': 'px-3 py-1.5 rounded-md text-sm font-medium cursor-pointer transition-colors duration-200',
-    'btn-primary': 'btn bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500',
-    'btn-ghost': 'btn bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800',
-    'card': 'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-3',
-    'text-primary': 'text-gray-900 dark:text-gray-100',
-    'text-secondary': 'text-gray-600 dark:text-gray-400',
-    'text-muted': 'text-gray-400 dark:text-gray-500',
+    btn: 'inline-flex items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold tracking-wide cursor-pointer transition-all duration-180',
+    'btn-primary': 'btn border border-transparent bg-[color:var(--accent)] text-[color:var(--accent-contrast)] hover:opacity-92 hover:-translate-y-0.5',
+    'btn-ghost': 'btn border border-[color:var(--border)] bg-[color:var(--surface)] text-[color:var(--text-secondary)] hover:bg-[color:var(--surface-strong)] hover:text-[color:var(--text-primary)]',
+    card: 'rounded-[var(--radius-lg)] border border-[color:var(--border)] bg-[color:var(--surface)]/95 p-4 shadow-[var(--shadow-soft)] backdrop-blur-sm transition-all duration-200 hover:border-[color:var(--accent)]/45 hover:-translate-y-0.5',
+    'text-primary': 'text-[color:var(--text-primary)]',
+    'text-secondary': 'text-[color:var(--text-secondary)]',
+    'text-muted': 'text-[color:var(--text-muted)]',
   },
   theme: {
     colors: {
